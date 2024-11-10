@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<div class="login-page">
+  <div class="form">
+    <form class="login-form" action="/user/login" method="POST">
+     <input type="text" id="message" value="{{message}}" name="message" hidden>     
+      <h2>Login</h2>
+      {{!-- <h5 class="text-danger">{{msg}}</h5> --}}
+      <input id="username" type="text" placeholder="username" name="username" />
+      <input id="password" type="password" placeholder="password" name="password"/>
+      <button>login</button>
+<p class="message">Not registered? <a href="/user/signup">Create an account</a></p>
+    </form>
+
+  </div>
+</div> 
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector("login-form").addEventListener("submit", formValidate)
+
+   })
+   
+     const message =document.getElementById("message").value
+  if (message){
+    Swal.fire(message)
+  }
+
+   
+function formValidate(e) {
+
+    e.preventDefault()
+    var username = document.getElementById("username").value;
+
+    var password = document.getElementById("password").value;
+   
+
+
+    if (username === "" || password === "") {
+
+      alert("All fields are required")
+      return false;
+    } 
+
+    e.target.submit()
+    return true;
+
+  } 
+
+
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="style.css">
+
+
+<main>
+
+  <div class="signup-page">
+
+    <div class="form">
+      <form class="register-form">
+        <input type="text" placeholder="Username" />
+        <input type="password" placeholder="Password" />
+
+
+
+      </form>
+
+      <form class="signup-form" action="/user/signup" method="POST">
+
+        <input type="text" id="message" value="{{message}}" name="message" hidden>
+        <h2 class="fs-1">Sign Up</h2>
+        <h5 class="text-danger">{{msg}}</h5>
+        <input id="username" type="text" name="username" placeholder="username" />
+        <input id="password" type="password" name="password" placeholder="password" />
+        <input id="confirmpassword" type="password" name="confirmpassword" placeholder="confirm password" />
+        <input id="email" type="text" name="email" placeholder="email address" />
+        <button>Create Account</button>
+
+
+      </form>
+    </div>
+  </div>
+</main>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+
+{{!-- Signup Validation --}}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector(".signup-form").addEventListener("submit", formValidate)
+
+
+
+    const message = document.getElementById("message").value
+    if (message) {
+
+      console.log(message)
+      Swal.fire(message)
+    }
+  })
+
+
+  function formValidate(e) {
+
+    e.preventDefault()
+    var username = document.getElementById("username").value.trim();
+    var email = document.getElementById('email').value.trim();
+    var password = document.getElementById("password").value;
+    var confirmpassword = document.getElementById("confirmpassword").value;
+
+
+    if (username === "" || password === "" || confirmpassword === "" || email === "") {
+
+      alert("All fields are required")
+      return false;
+    } else if (password !== confirmpassword) {
+      Swal.fire("Password do not match")
+      return false;
+     
+    }
+
+    e.target.submit()
+    return true;
+
+  }
+
+
+
+
+
+
+
+</script>
