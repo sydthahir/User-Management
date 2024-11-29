@@ -1,64 +1,91 @@
 const LoginSchema = require('../model/userModel')
 const bcrypt = require('bcryptjs');
 
+
+// Registering new user on DB
 const registerUser = async (req, res) => {
     try {
+
+    // Acquiring data from Signup page
         const { username, email, password } = req.body
-        console.log(email);
- 
-        const existingUser =await LoginSchema.findOne({email})
-        // console.log(user);
-        if(existingUser) 
-            return res.render("user/signup",{message:"Email already exists"})
+        
+         // Matching with email
+        const existingUser = await LoginSchema.findOne({ email })
+            if (existingUser)
+            return res.render("user/signup", { message: "Email already exists" })
+
+        // Password hashing
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Creating new data on databse
         const newUser = new LoginSchema({
             username,
             email,
-            password:hashedPassword,
- 
-        })   
+            password: hashedPassword,
 
+        })
         await newUser.save()
 
-        res.render("user/login",{message:"Account created successfully"})
+        res.render("user/login", { message: "Account created successfully" })
 
-    } catch (error) { 
+    } catch (error) {
 
-console.log("error found",error)
-res.render("user/signup", { message: "An error occurred, please try again later" });
+        console.log(error)
+        res.render("user/signup", { message: "An error occurred, please try again later" });
 
     }
 }
 
-const login = async (req,res)=>{
-    try{
-        const{username, email, password}= req.body
+// Login Validation and Rendering
+const login = async (req, res) => {
+    try {
 
-         const existingUser = await LoginSchema.findOne({username})
-         console.log(existingUser);
+        // Acquiring passing valuses through the login form
+        const { username, email, password } = req.body
 
-    if(!existingUser) return res.render("user/login",{message:"User doesn't exist"})
-        const isDecrypt =await bcrypt.compare(password,existingUser.password)
-    
- 
-    if(!isDecrypt) return res.render("user/login",{message:"Incorrect password"})
-        res.render("user/home",{message:"Login success"})
-                
-    }catch(error){
+
+        // Matching with email
+        const existingUser = await LoginSchema.findOne({ email })
+        console.log(existingUser);
+        if (!existingUser) return res.render("user/login", { message: "User doesn't exist" })
+
+        // Password decrypting and matching
+        const isDecrypt = await bcrypt.compare(password, existingUser.password)
+        if (!isDecrypt) return res.render("user/login", { message: "Incorrect password" })
+            
+        req.session.existingUser = true
+        req.session.user={
+            password:existingUser.password,
+            email: existingUser.email,
+        }
+
+        res.render("user/home", { message: "Login success" ,user:req.session.user })
+
+    } catch (error) {
         res.render("user/login", { message: "An error occurred, please try again later" });
     }
 }
 
-const loadSignup = (req, res)=>{
+// Loading signup-page
+const loadSignup = (req, res) => {
     res.render("user/signup")
 }
 
-
-const loadLogin = (req,res)=>{
+// Loading login-page
+const loadLogin = (req, res) => {
     res.render("user/login")
 }
 
+//loading home-page
+const loadHome = (req, res) => {
+    res.render("user/home")
+    
+}
 
+// Logout and rendering login
+const logout = (req, res) => {
+    req.session.destroy()
+    res.redirect("/user/login")
+}
 
-module.exports = { registerUser, loadSignup, loadLogin, login }
+module.exports = { registerUser, loadSignup, loadLogin, login, loadHome, logout }

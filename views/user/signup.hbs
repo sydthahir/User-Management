@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/userStyles/style.css">
 
 
 <main>
@@ -6,19 +6,12 @@
   <div class="signup-page">
 
     <div class="form">
-      <form class="register-form">
-        <input type="text" placeholder="Username" />
-        <input type="password" placeholder="Password" />
-
-
-
-      </form>
 
       <form class="signup-form" action="/user/signup" method="POST">
 
         <input type="text" id="message" value="{{message}}" name="message" hidden>
         <h2 class="fs-1">Sign Up</h2>
-        <h5 class="text-danger">{{msg}}</h5>
+        {{!-- <h5 class="text-danger">{{msg}}</h5> --}}
         <input id="username" type="text" name="username" placeholder="username" />
         <input id="password" type="password" name="password" placeholder="password" />
         <input id="confirmpassword" type="password" name="confirmpassword" placeholder="confirm password" />
@@ -40,7 +33,8 @@
 
 
 
-{{!-- Signup Validation --}}
+ {{!-- Signup Validation  --}}
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".signup-form").addEventListener("submit", formValidate)
@@ -72,7 +66,7 @@
     } else if (password !== confirmpassword) {
       Swal.fire("Password do not match")
       return false;
-     
+
     }
 
     e.target.submit()

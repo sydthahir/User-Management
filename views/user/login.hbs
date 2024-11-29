@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/userStyles/style.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -8,9 +8,9 @@
      <input type="text" id="message" value="{{message}}" name="message" hidden>     
       <h2>Login</h2>
       {{!-- <h5 class="text-danger">{{msg}}</h5> --}}
-      <input id="username" type="text" placeholder="username" name="username" />
+      <input id="email" type="text" placeholder="username" name="email" />
       <input id="password" type="password" placeholder="password" name="password"/>
-      <button>login</button>
+      <button type="submit">login</button>
 <p class="message">Not registered? <a href="/user/signup">Create an account</a></p>
     </form>
 
@@ -19,8 +19,8 @@
 
 <script>
    document.addEventListener("DOMContentLoaded", function () {
-    document.querySelector("login-form").addEventListener("submit", formValidate)
-
+    const form = document.querySelector(".login-form")
+   form.addEventListener("submit", formValidate)
    })
    
      const message =document.getElementById("message").value
@@ -32,13 +32,13 @@
 function formValidate(e) {
 
     e.preventDefault()
-    var username = document.getElementById("username").value;
+    var email= document.getElementById("email").value;
 
     var password = document.getElementById("password").value;
    
 
 
-    if (username === "" || password === "") {
+    if (email === "" || password === "") {
 
       alert("All fields are required")
       return false;
@@ -48,13 +48,6 @@ function formValidate(e) {
     return true;
 
   } 
-
-
-
-
-
-
-
 
 
 </script>

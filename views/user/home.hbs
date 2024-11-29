@@ -29,9 +29,25 @@
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <a href="/logout" class="btn btn-danger">Logout</a>
+        <a href="/user/logout" class="btn btn-danger">Logout</a>
       
       </form>
     </div>
+ 
   </div>
+     
 </nav>
+
+
+
+
+<section class="jumbotron text-center bg-light py-5">
+  <div class="container">
+    <h1 class="display-4">Hello, Welcome Again!</h1>
+    <p class="lead">Your journey to discover amazing content starts here.</p>
+    <a href="#" class="btn btn-primary btn-lg">Learn More</a>
+    <h2>Email is :{{user.email}}</h2>
+    <h2>password: {{user.password}}</h2>
+  </div>
+</section>
+

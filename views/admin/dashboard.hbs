@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/dashboard.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    {{!-- navbar --}}
+    <nav class="navbar">
+        <h1>Admin dashboard</h1>
+        <button class="btn btn-danger" onclick="window.location.href='/admin/logout'">Logout</button>
+     
+    </nav>
+
+    
+
+
+    {{!-- Users List and management features --}}
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h2>User <b>Management</b></h2>
+                        </div>
+                        <div class="col-sm-7">
+                            <button class="btn btn-secondary" onclick="openAddUserModal()"><i
+                                    class="material-icons">&#xE147;</i> <span>Add New User</span></button>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {{!-- Users searchbar --}}
+                <form action="/admin/search" method="GET" class="search-form">
+                    <input type="text" name="search" placeholder="Search by email or username" required>
+                    <button type="submit">Search</button>
+                </form>
+
+                {{!-- Users management table data  --}}
+
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                          
+                            <th>Email</th>
+                            <th>username</th>
+                            <th>Actions</th>
+                            <th hidden>Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each users}}
+                        <tr>
+                           
+                            <td>{{this.email}}</td>
+                            <td>{{this.username}}</td>
+                            <td>
+                                <button class="edit-btn"
+                                    onclick="openEditUserModal(`{{this._id}}`,`{{this.email}}`)">Edit User</button>
+                                <button class="delete-btn" onclick="deleteUser(`{{this._id}}`)">Delete</button>
+
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+
+
+        {{!-- Add User Modal --}}
+        <div id="addUserModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddUserModal()">&times;</span>
+                <input type="text" id="message" value="{{message}}" name="message" hidden>
+                <h2>Add User</h2>
+                <form action="/admin/add-user" method="POST" id="addUserForm">
+
+                   
+                    <label for="addEmail">Email:</label>
+                    <input type="email" id="addEmail" name="email" required>
+                     <label for="addUsername">Username:</label>
+                    <input type="text" id="addUsername" name="username" required>
+                    <label for="addPassword">Password</label>
+                    <input type="password" id="addPassword" name="password" required>
+                    <button type="submit" class="modal-btn">Add User</button>
+                </form>
+            </div>
+        </div>
+
+
+        {{!-- Edit Modal --}}
+
+        <div id="editUserModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditUserModal()">&times;</span>
+                <h2>Edit User</h2>
+                <form action="/admin/edit-user" method="POST" id="editUserForm">
+                    <input type="hidden" id="editUserId" name="id">
+                    <label for="editEmail">Email:</label>
+                    <input type="email" id="editEmail" name="email" required>
+                    <label for="editPassword">New Password</label>
+                    <input type="password" id="editPassword" name="password">
+                    <button type="submit" class="modal-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+
+
+ 
+
+
+        <script>
+
+
+   const message = document.getElementById("message").value
+   if (message) {
+
+      console.log(message)
+     Swal.fire(message)
+   }
+  
+
+
+
+            function openAddUserModal() {
+                document.getElementById("addUserModal").style.display = "block";
+
+            }
+            function closeAddUserModal() {
+                document.getElementById("addUserModal").style.display = "none";
+            }
+
+            //openEditUserModal
+            function openEditUserModal(id, email) {
+                document.getElementById("editUserModal").style.display = "block";
+                document.getElementById("editUserId").value = id;
+                document.getElementById("editEmail").value = email;
+
+            }
+            function closeEditUserModal() {
+                document.getElementById("editUserModal").style.display = "none";
+            }
+
+
+            //Delete User fuunction
+            function deleteUser(userId) {
+                if (confirm("Are you sure you want delete this user")) {
+                    window.location.href = `/admin/delete-user/${userId}`;
+                }
+            }
+
+
+
+        </script>
+
+
+
+</body>
+
+</html>

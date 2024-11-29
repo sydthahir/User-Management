@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 const hbs = require('hbs');
+const cookieParser = require('cookie-parser');
 const session = require('express-session')
 const nocache = require('nocache')
 const userRoute = require('./Routes/user');
@@ -18,28 +19,33 @@ app.set('view engine', 'hbs')
 app.use(express.static('public'));
 
 
-
+// Converting to json 
 app.use(express.json())
 app.use(express.urlencoded({extended:true }))
 
+// No-cache middleware 
+app.use(nocache())
 
+// Session handle middleware  
 app.use(session({
     secret: 'keyboard-cat',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie:{
+        maxAge: 1000* 60 * 30,
+    }
 }))
-
-// No-cache middleware 
-app.use(nocache())
 
 
 
 app.use('/user', userRoute)
 app.use('/admin',adminRoute)
+
+// connecting with mongoDB
 connect();
  
 
-
-app.listen(3003, () => console.log("Port Connected \n Server running on port 3003"))
+// Port assigning
+app.listen(3003, () => console.log("Port Connected \nServer running on port 3003"))
 
 

@@ -13,9 +13,6 @@ const connect = async() => {
 
     
 };
-// /console.log("data added")
 
-
-
-
+ 
 module.exports =connect
