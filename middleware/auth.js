@@ -10,7 +10,7 @@ const checkSession = (req, res, next)=>{
 
 const isLogin = (req, res, next)=>{
     if(req.session.existingUser){
-        res.redirect("/user/home")
+        res.redirect("/user/home") 
     }else{
         next()
     }
